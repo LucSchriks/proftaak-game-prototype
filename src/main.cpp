@@ -1,10 +1,14 @@
 #include <Arduino.h>
 #include "WiFi.h"
 #include "HTTPClient.h"
+#include "WiFiClientSecure.h"
 
 #define WIFI_NETWORK "LAPTOP-6LHD9VFL 8634"
 #define WIFI_PASSWORD "9>sA8315"
 #define WIFI_TIMEOUT 20000
+
+HTTPClient http;
+WiFiClient client;
 
 const char* ca_cert = \
 "-----BEGIN CERTIFICATE-----\n" \
@@ -84,8 +88,6 @@ const char* ca_cert = \
 "sLtp/pqEpc0tqWE7YJLkQ9YredZaDdv3f3r8fcNZ433XR3jCsn1t8np1SQ==    \n" \
 "-----END CERTIFICATE-----\n";
 
-HTTPClient http;
-
 void wifiConnect()
 {
   Serial.print("Connecting to Wifi");
@@ -119,7 +121,8 @@ void setup()
 
 void loop()
 {
-  http.begin("https://www.google.com/", ca_cert);
+  http.setTimeout(10000);
+  http.begin(client, "http://arduinojson.org/example.json");
   
   int httpCode = http.GET();
   if (httpCode > 0)
