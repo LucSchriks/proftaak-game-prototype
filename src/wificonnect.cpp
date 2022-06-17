@@ -5,13 +5,16 @@
 #include "wifisecrets.h"
 #include "wificonnect.h"
 
+#define WIFI_TIMEOUT 20000
+
 HTTPClient http;
 WiFiClientSecure client;
 
-wificonnect::wificonnect(){
-  #define WIFI_TIMEOUT 20000
-}
+unsigned long attemptTime;
 
+wificonnect::wificonnect(){
+  
+}
 
 void wificonnect::Connect()
 {
@@ -19,7 +22,7 @@ void wificonnect::Connect()
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_NETWORK, WIFI_PASSWORD);
 
-  unsigned long attemptTime = millis();
+  attemptTime = millis();
 
   while (WiFi.status() != WL_CONNECTED && millis() - attemptTime < WIFI_TIMEOUT)
   {

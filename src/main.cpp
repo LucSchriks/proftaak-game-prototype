@@ -1,16 +1,22 @@
 #include <Arduino.h>
 #include "wificonnect.h"
+#include "playingField.h"
 
-wificonnect wifi1;
+playingField game1;
 
 void setup()
 {
   Serial.begin(115200);
-  wifi1.Connect();
+  game1.Init();
+  Serial.println("esp32!!");
 }
 
 void loop()
 {
-  wifi1.httpReq();
-  delay(10000);
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+  delay(1000);
+  game1.fieldCallBack();
+  int position = game1.getFieldPos();
+  if (position == playingField::BOTTOM_LEFT){
+    Serial.println("Bottom left");
+  }
+}
